@@ -364,4 +364,6 @@ FodyWeavers.xsd
 
 
 
+/UserService/appsettings.json
+UserService/appsettings.json
 */appsettings.json
