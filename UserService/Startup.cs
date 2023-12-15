@@ -12,6 +12,8 @@ using UserService.Services;
 using System.Net;
 using UserService.Data;
 using UserService.SQL;
+using Steeltoe.Discovery.Client;
+using Steeltoe.Discovery.Eureka;
 
 namespace UserService
 {
@@ -59,14 +61,16 @@ namespace UserService
             }
             
             services.AddScoped<ISqlUser, SqlUser>();
-            /*services.AddScoped<IUser, SQLUser>();
-            services.AddScoped<ILogin, SQLUser>();*/
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestAPI", Version = "v1" });
             });
             services.AddSignalR();
+
+            //services.AddDiscoveryClient(Configuration);
+            services.AddDiscoveryClient();
+            services.AddServiceDiscovery(options => options.UseEureka());
 
             /*services.AddHttpsRedirection(options =>
             {
@@ -75,23 +79,16 @@ namespace UserService
             });*/
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            //db.Database.EnsureCreated();
             DatabaseManagementService.MigrationInitialisation(app);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                //app.UseSwagger();
-                //app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestAPI v1"));
-
-                //app.UseHttpsRedirection();
             }
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestAPI v1"));
 
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -100,38 +97,12 @@ namespace UserService
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseDiscoveryClient();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-
-
-            /*var builder = WebApplication.CreateBuilder(args);
-
-            // Add services to the container.
-
-            builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
-
-            var app = builder.Build();
-
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            app.Run();*/
         }
     }
 }

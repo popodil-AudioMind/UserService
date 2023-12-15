@@ -3,7 +3,7 @@
 namespace UserService.Controllers
 {
     [ApiController]
-    [Route("health")]
+    [Route("healthcheck")]
     public class HealthController : ControllerBase
     {
         public HealthController()

@@ -6,7 +6,7 @@ using UserService.Models;
 namespace UserService.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private ISqlUser _sqlUser;
@@ -15,7 +15,7 @@ namespace UserService.Controllers
             _sqlUser = sqlUser;
         }
 
-        [HttpPost("create", Name = "Create")]
+        [HttpPost("", Name = "Create")]
         public IActionResult Create(User user)
         {
             if (user == null) return BadRequest();
@@ -30,7 +30,7 @@ namespace UserService.Controllers
             return Created("User database", createdUser);
         }
 
-        [HttpGet("get/{email}", Name = "Read")]
+        [HttpGet("{email}", Name = "Read")]
         public IActionResult GetUser(string email)
         {
             if (email == null || email == string.Empty) return BadRequest("Email field can't be empty.");
@@ -42,7 +42,7 @@ namespace UserService.Controllers
             return Ok(foundUser);
         }
 
-        [HttpGet("get", Name = "ReadAll")]
+        [HttpGet("", Name = "ReadAll")]
         public IActionResult GetAll()
         {
             List<User> foundUser = _sqlUser.GetUsers();
@@ -51,13 +51,13 @@ namespace UserService.Controllers
             return Ok(foundUser);
         }
 
-        [HttpPatch("update", Name = "Update")]
+        [HttpPatch("", Name = "Update")]
         public IActionResult Update()
         {
             return Ok("Accoutn updated");
         }
 
-        [HttpDelete("delete", Name = "Delete")]
+        [HttpDelete("", Name = "Delete")]
         public IActionResult DeleteUser(string email)
         {
             if (email == null || email == string.Empty) return BadRequest("Email field can't be empty.");
