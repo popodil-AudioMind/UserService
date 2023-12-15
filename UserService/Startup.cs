@@ -68,8 +68,8 @@ namespace UserService
             });
             services.AddSignalR();
 
-            //services.AddDiscoveryClient(Configuration);
-            services.AddDiscoveryClient();
+            services.AddDiscoveryClient(Configuration);
+            //services.AddDiscoveryClient();
             services.AddServiceDiscovery(options => options.UseEureka());
 
             /*services.AddHttpsRedirection(options =>
