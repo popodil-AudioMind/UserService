@@ -47,8 +47,8 @@ namespace UserService
 
             //DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             string connectionstring;
-            if (_env.IsDevelopment()) connectionstring = Configuration.GetConnectionString("DevConnection");
-            else connectionstring = Configuration.GetConnectionString("DefaultConnection");
+            if (_env.IsDevelopment()) connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
+            else connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
             try
             {
                 services.AddDbContextPool<UserDatabaseContext>(
