@@ -1,8 +1,8 @@
-name: SonarCloud
+name: SonarCube
 on:
   push:
     branches:
-      - '!master'   # excludes master
+      - '!main'   # excludes main
   pull_request:
     types: [opened, synchronize, reopened]
 jobs:
