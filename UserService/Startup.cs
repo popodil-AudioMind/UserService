@@ -68,9 +68,9 @@ namespace UserService
             });
             services.AddSignalR();
 
-            services.AddDiscoveryClient(Configuration);
+            //services.AddDiscoveryClient(Configuration);
             //services.AddDiscoveryClient();
-            services.AddServiceDiscovery(options => options.UseEureka());
+            //services.AddServiceDiscovery(options => options.UseEureka());
 
             /*services.AddHttpsRedirection(options =>
             {
@@ -96,8 +96,6 @@ namespace UserService
 
             app.UseAuthentication();
             app.UseAuthorization();
-
-            app.UseDiscoveryClient();
 
             app.UseEndpoints(endpoints =>
             {

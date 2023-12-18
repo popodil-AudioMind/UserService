@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Hosting;
 using Steeltoe.Discovery.Client;
+using Steeltoe.Discovery.Eureka;
 using UserService;
 
 /*var builder = WebApplication.CreateBuilder(args);
@@ -36,6 +37,7 @@ namespace UserService
         public static void Main(string[] args)
         {
             CreateHostBuilder(args)
+                //.AddServiceDiscovery(options => options.UseEureka())
                 .Build()
                 .Run();
         }
@@ -45,6 +47,7 @@ namespace UserService
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
-                });
+                })
+                .AddDiscoveryClient();
     }
 }
