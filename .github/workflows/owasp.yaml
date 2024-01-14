@@ -6,6 +6,9 @@ on:
   pull_request:
 jobs:
   Check:
+    permissions:
+      contents: read
+      security-events: write
     name: OWASP
     runs-on: ubuntu-20.04
     steps:
