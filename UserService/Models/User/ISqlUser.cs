@@ -3,10 +3,11 @@ namespace UserService.Data
 {
     public interface ISqlUser
     {
-        User GetUser(string email);
+        User GetUser(string userId);
         List<User> GetUsers();
         User AddUser(User user);
-        bool DeleteUser(string Email);
+        bool DeleteUser(string userId);
+        bool DeleteUserById(string userId);
         User UpdateUser(User user);
     }
 }

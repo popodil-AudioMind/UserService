@@ -19,9 +19,9 @@ namespace UserService.Models
         public Guid id { get; set; }
 
         [Required]
-        public string displayname { get; set; }
+        public string displayname { get; set; } = string.Empty;
 
-        [Required, EmailAddress]
-        public string email { get; set; }
+        [Required]
+        public string email { get; set; } = string.Empty;
     }
 }

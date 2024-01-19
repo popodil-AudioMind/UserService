@@ -31,9 +31,9 @@ namespace UserService.SQL
             return null;
         }
 
-        public bool DeleteUser(string email)
+        public bool DeleteUser(string userId)
         {
-            IUser? existingUser = _userContext.Users.FirstOrDefault(x => x.email == email);
+            IUser? existingUser = _userContext.Users.FirstOrDefault(x => x.id == userId);
             if (existingUser != null)
             {
                 _userContext.Users.Remove(existingUser);
@@ -43,9 +43,21 @@ namespace UserService.SQL
             return false;
         }
 
-        public User GetUser(string email)
+        public bool DeleteUserById(string userId)
         {
-            IUser? existingUser = _userContext.Users.FirstOrDefault(x => x.email == email);
+            IUser? existingUser = _userContext.Users.FirstOrDefault(x => x.id == userId);
+            if (existingUser != null)
+            {
+                _userContext.Users.Remove(existingUser);
+                _userContext.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        public User GetUser(string userId)
+        {
+            IUser? existingUser = _userContext.Users.FirstOrDefault(x => x.id == userId);
             if (existingUser != null)
             {
                 return new User(existingUser);

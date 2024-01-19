@@ -14,6 +14,11 @@ using UserService.Data;
 using UserService.SQL;
 using Steeltoe.Discovery.Client;
 using Steeltoe.Discovery.Eureka;
+using MassTransit;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Prometheus;
 
 namespace UserService
 {
@@ -47,8 +52,10 @@ namespace UserService
 
             //DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             string connectionstring;
-            if (_env.IsDevelopment()) connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
-            else connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
+            /*if (_env.IsDevelopment()) connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
+            else connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");*/
+
+            connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
             try
             {
                 services.AddDbContextPool<UserDatabaseContext>(
@@ -67,6 +74,35 @@ namespace UserService
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RestAPI", Version = "v1" });
             });
             services.AddSignalR();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = null,
+            ValidAudience = null,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetValue<string>("JWTSecurityKey")))
+        };
+    });
+            services.AddAuthorization();
+
+            services.AddMassTransit(x =>
+            {
+                x.AddConsumer<CreateConsumer>();
+                x.UsingRabbitMq((context, cfg) =>
+                {
+                    cfg.Host("localhost", "/", h => {
+                        h.Username("guest");
+                        h.Password("guest");
+                    });
+
+                    cfg.ConfigureEndpoints(context);
+                });
+            });
 
             //services.AddDiscoveryClient(Configuration);
             //services.AddDiscoveryClient();
@@ -90,7 +126,8 @@ namespace UserService
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RestAPI v1"));
 
 
-            app.UseRouting();
+            app.UseRouting(); 
+            app.UseHttpMetrics();
 
             app.UseCors();
 
@@ -100,6 +137,7 @@ namespace UserService
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapMetrics();
             });
         }
     }

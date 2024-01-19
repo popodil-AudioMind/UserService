@@ -1,6 +1,9 @@
 using Microsoft.AspNetCore.Hosting;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 using Steeltoe.Discovery.Client;
 using Steeltoe.Discovery.Eureka;
+using System.Text;
 using UserService;
 
 /*var builder = WebApplication.CreateBuilder(args);
