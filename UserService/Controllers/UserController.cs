@@ -16,7 +16,7 @@ namespace UserService.Controllers
             _sqlUser = sqlUser;
         }
 
-        [HttpPost("", Name = "Create"), Authorize(Roles = "administrator")]
+        [HttpPost("", Name = "Create"), Authorize]
         public IActionResult Create(User user)
         {
             if (user == null) return BadRequest();
