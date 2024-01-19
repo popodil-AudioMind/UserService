@@ -54,7 +54,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@master
       - name: Restore dependencies
-        run: dotnet restore ./Gateway.sln
+        run: dotnet restore ./UserService.sln
       - name: Run Snyk to check for vulnerabilities
         uses: snyk/actions/dotnet@master
         continue-on-error: true
