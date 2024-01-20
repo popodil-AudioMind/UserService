@@ -52,10 +52,10 @@ namespace UserService
 
             //DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             string connectionstring;
-            /*if (_env.IsDevelopment()) connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
-            else connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");*/
+            if (_env.IsDevelopment()) connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
+            else connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
 
-            connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
+            //connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
             try
             {
                 services.AddDbContextPool<UserDatabaseContext>(
