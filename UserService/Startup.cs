@@ -52,10 +52,10 @@ namespace UserService
 
             //DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
             string connectionstring;
-            if (_env.IsDevelopment()) connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
-            else connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
+            //if (_env.IsDevelopment()) connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
+            //else connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
 
-            //connectionstring = Configuration.GetValue<string>("ConnectionStrings:DevConnection");
+            connectionstring = Configuration.GetValue<string>("ConnectionStrings:DefaultConnection");
             try
             {
                 services.AddDbContextPool<UserDatabaseContext>(
@@ -117,7 +117,7 @@ namespace UserService
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            DatabaseManagementService.MigrationInitialisation(app);
+            //DatabaseManagementService.MigrationInitialisation(app);
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
